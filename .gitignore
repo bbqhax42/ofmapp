@@ -1,0 +1,5 @@
+.idea/
+*.iml
+*.ser
+*.txt
+target/
