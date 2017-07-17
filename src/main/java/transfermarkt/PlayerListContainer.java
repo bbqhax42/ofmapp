@@ -13,6 +13,7 @@ public class PlayerListContainer implements Serializable {
     private static final long serialVersionUID = 7219632990740128143L;
     private static PlayerListContainer unique = null;
     private ArrayList<PlayerList> allSpielerListen;
+    private int playday, season;
 
     private PlayerListContainer() {
         allSpielerListen = new ArrayList<PlayerList>();
@@ -34,6 +35,21 @@ public class PlayerListContainer implements Serializable {
         return unique;
     }
 
+    public int getSeason() {
+        return season;
+    }
+
+    public void setSeason(int season) {
+        this.season = season;
+    }
+
+    public int getPlayday() {
+        return playday;
+    }
+
+    public void setPlayday(int playday) {
+        this.playday = playday;
+    }
 
     public int size() {
         return allSpielerListen.size();
@@ -64,8 +80,8 @@ public class PlayerListContainer implements Serializable {
         for (int i = 0; i < allSpielerListen.size() - 1; i++) {
             PlayerList tmp = allSpielerListen.get(i);
             tmp.clear();
-            }
         }
+    }
 
 
     public Iterator<PlayerList> iterator() {
@@ -89,7 +105,7 @@ public class PlayerListContainer implements Serializable {
 
     }
 
-    public void saveDB(Database db){
+    public void saveDB(Database db) {
         for (Iterator<PlayerList> iter = this.iterator(); iter.hasNext(); ) {
             try {
                 db.addPlayerList(iter.next());

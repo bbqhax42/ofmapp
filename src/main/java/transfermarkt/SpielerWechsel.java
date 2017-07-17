@@ -17,10 +17,12 @@ import java.util.Scanner;
  * Created by Chris on 25.10.2016.
  */
 public class SpielerWechsel {
-    int playday = -1;
+    int playday = -1, season = -1;
     String version = "A";
     String fileName = null;
     String logName = null;
+    private String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0";
+    private Map<String, String> loginCookies;
 
 
     final String userID = "brotkatenils";
@@ -33,8 +35,6 @@ public class SpielerWechsel {
 
         try {
 
-
-            String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0";
 
             try {
 
@@ -59,31 +59,15 @@ public class SpielerWechsel {
                         .execute();
 
 
-                Map<String, String> loginCookies = loginResponse.cookies();
+                loginCookies = loginResponse.cookies();
                 //System.out.println("Login response code: " + loginResponse.statusCode());
 
                 PrintWriter writer = null;
 
+                parsePlaydayAndSeason();
 
-                Document playdaypage;
-                //parsing the playday
-                playdaypage = Jsoup.connect("http://www.onlinefussballmanager.de/head-int.php?spannend=0")
-                        .userAgent(userAgent)
-                        .cookies(loginCookies)
-                        .ignoreContentType(true)
-                        .get();
-
-                Elements playdays = playdaypage.select("body > div.headFrame.pos-rel.clearfix > div.float.bgFront.pos-rel > div.pos-abs.yellow.clearfix.infoBlock > p > span:nth-child(1)");
-                for (Element ele : playdays) {
-                    playday = Integer.parseInt(ele.html().trim());
-                }
-                if (playday == -1) {//date could not be parsed
-                    System.exit(-1);
-                }
-
-//playday=29;
-                fileName = (playday - 1) + version + "spielerlistencontainer" + ".ser";
-                logName = "SW" + (playday - 1) + version + "SpielerWechsel" + ".txt";
+                fileName = (playday - 1) + "_" + season + "spielerlistencontainer" + ".ser";
+                logName = "SW" + (playday - 1) + "_" + season + "SpielerWechsel" + ".txt";
 
                 System.out.println("Playday: " + playday);
                 container = container.load(fileName);
@@ -113,7 +97,6 @@ public class SpielerWechsel {
                         .ignoreContentType(true)
                         .maxBodySize(0)
                         .get();
-
 
 
                 r = new Random();
@@ -159,7 +142,7 @@ public class SpielerWechsel {
                             if (readFile.hasNextLine())
                                 power = Integer.parseInt(readFile.nextLine().replace("<td>", "").replace("</td>", "").trim());
                             //System.out.println(power);
-                            String abc=null;
+                            String abc = null;
                             //parse final sales price
                             if (readFile.hasNextLine())
                                 price = Integer.parseInt(readFile.nextLine().replace("<td>", "").replace("</td>", "").trim());
@@ -212,6 +195,35 @@ public class SpielerWechsel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void parsePlaydayAndSeason() throws IOException {
+        Document playdaypage;
+        //parsing the playday
+        playdaypage = Jsoup.connect("http://www.onlinefussballmanager.de/head-int.php?spannend=0")
+                .userAgent(userAgent)
+                .cookies(loginCookies)
+                .ignoreContentType(true)
+                .get();
+
+        Elements playdays = playdaypage.select("body > div.headFrame.pos-rel.clearfix > div.float.bgFront.pos-rel > div.pos-abs.yellow.clearfix.infoBlock > p > span:nth-child(1)");
+        for (Element ele : playdays) {
+            this.playday = Integer.parseInt(ele.html().trim());
+        }
+        if (this.playday == -1) {//date could not be parsed
+            System.exit(-1);
+        }
+
+
+        Elements seasons = playdaypage.select("body > div.headFrame.pos-rel.clearfix > div.float.bgFront.pos-rel > div.pos-abs.yellow.clearfix.infoBlock > p > span:nth-child(2)");
+        for (Element ele : seasons) {
+            this.season = Integer.parseInt(ele.html().trim());
+        }
+        if (this.playday == -1) {//date could not be parsed
+            System.exit(-1);
+        }
+
+        System.out.println("Spieltag und Saison detected: " + season + "/" + playday);
     }
 
 

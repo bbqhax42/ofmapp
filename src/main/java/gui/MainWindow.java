@@ -80,7 +80,7 @@ public class MainWindow extends Frame implements ActionListener {
         } else if (e.getActionCommand().equals("Datenbank befuellen")) {
 
             JFrame frame = new JFrame("InputDialog Example #1");
-            JFileChooser chooser = new JFileChooser();
+            JFileChooser chooser = new JFileChooser("C:\\Users\\Chris\\ofmapp2");
             chooser.setFileFilter(new FileNameExtensionFilter(
                     "Objectfile", "ser"));
             chooser.showOpenDialog(this);
@@ -93,7 +93,7 @@ public class MainWindow extends Frame implements ActionListener {
                 System.exit(-1);
             }
             try {
-                databaseConn = new Database(true);
+                databaseConn = new Database(container.getPlayday(), container.getSeason());
                 container = container.load(range);
                 container.saveDB(databaseConn);
                 databaseConn.startServer();

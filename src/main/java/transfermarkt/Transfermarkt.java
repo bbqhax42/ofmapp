@@ -18,14 +18,14 @@ import java.util.Random;
  */
 public class Transfermarkt {
 
-    private int playday =-1;
+    private int playday = -1, season = -1;
     final String version = "A";
 
 
     final String userID = "brotkatenils";
     final String userPass = "dertollenils";
     private String fileName;
-    private  String logName;
+    private String logName;
     private Map<String, String> loginCookies;
     private String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0";
     final int waitTimeLow = 3500; //Minimum wait time between Server requests
@@ -50,12 +50,10 @@ public class Transfermarkt {
     final int maxPower30 = 24; //Maximum power for age 30
 
 
-
     public Transfermarkt() {
         PlayerListContainer container = PlayerListContainer.instance();
 
         try {
-
 
 
             Connection.Response homePageResponse = Jsoup
@@ -78,30 +76,16 @@ public class Transfermarkt {
             loginCookies = loginResponse.cookies();
             //System.out.println("Login response code: " + loginResponse.statusCode());
 
-            Document playdaypage;
-            //parsing the playday
-            playdaypage = Jsoup.connect("http://www.onlinefussballmanager.de/head-int.php?spannend=0")
-                    .userAgent(userAgent)
-                    .cookies(loginCookies)
-                    .ignoreContentType(true)
-                    .get();
-
-            Elements playdays = playdaypage.select("body > div.headFrame.pos-rel.clearfix > div.float.bgFront.pos-rel > div.pos-abs.yellow.clearfix.infoBlock > p > span:nth-child(1)");
-            for (Element ele : playdays) {
-                playday=Integer.parseInt(ele.html().trim());
-                System.out.println("Playday: " + ele.html());
-            }
-            if(playday==-1){//date could not be parsed
-                System.exit(-1);
-            }
+            parsePlaydayAndSeason();
 
 
             Random r = new Random();
-            Thread.sleep(r.nextInt(10000 - 9000) + 1);
+            Thread.sleep(r.nextInt(waitTimeHigh - waitTimeLow) + waitTimeLow);
+
 
             PrintWriter writer = null;
-            fileName = playday + version + "spielerlistencontainer" + ".ser";
-            logName = playday + version + "log" + ".txt";
+            fileName = playday + "_" + season + "spielerlistencontainer" + ".ser";
+            logName = playday + "_" + season + "log" + ".txt";
             try {
                 writer = new PrintWriter(logName, "UTF-8");
             } catch (FileNotFoundException e) {
@@ -114,7 +98,6 @@ public class Transfermarkt {
             }
 
             //Wait time between initial Server request after logging in
-            r = new Random();
             Thread.sleep(r.nextInt(waitTimeHigh - waitTimeLow) + waitTimeLow);
 
 
@@ -177,8 +160,7 @@ public class Transfermarkt {
                                 .timeout(0)
                                 .cookies(loginCookies)
                                 .get();
-                    }
-                    catch (SocketTimeoutException e){
+                    } catch (SocketTimeoutException e) {
                         //pause 3-4 min einfuegen
 
                         System.out.println("SocketTimeoutException detected. Retrying.");
@@ -343,11 +325,42 @@ public class Transfermarkt {
         }
 
         try {
+            container.setPlayday(playday);
+            container.setSeason(season);
             container.save(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
 
+    }
+
+    private void parsePlaydayAndSeason() throws IOException {
+        Document playdaypage;
+        //parsing the playday
+        playdaypage = Jsoup.connect("http://www.onlinefussballmanager.de/head-int.php?spannend=0")
+                .userAgent(userAgent)
+                .cookies(loginCookies)
+                .ignoreContentType(true)
+                .get();
+
+        Elements playdays = playdaypage.select("body > div.headFrame.pos-rel.clearfix > div.float.bgFront.pos-rel > div.pos-abs.yellow.clearfix.infoBlock > p > span:nth-child(1)");
+        for (Element ele : playdays) {
+            this.playday = Integer.parseInt(ele.html().trim());
+        }
+        if (this.playday == -1) {//date could not be parsed
+            System.exit(-1);
+        }
+
+
+        Elements seasons = playdaypage.select("body > div.headFrame.pos-rel.clearfix > div.float.bgFront.pos-rel > div.pos-abs.yellow.clearfix.infoBlock > p > span:nth-child(2)");
+        for (Element ele : seasons) {
+            this.season = Integer.parseInt(ele.html().trim());
+        }
+        if (this.playday == -1) {//date could not be parsed
+            System.exit(-1);
+        }
+
+        System.out.println("Spieltag und Saison detected: " + season + "/" + playday);
     }
 }
