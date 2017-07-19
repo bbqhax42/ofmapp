@@ -61,7 +61,7 @@ public class Database {
         for (Iterator<PlayerTM> iter = list.iterator(); iter.hasNext(); ) {
             PlayerTM tmp = iter.next();
             StringBuilder tmpString = new StringBuilder();
-            String command = "INSERT INTO SPIELER VALUES(" + tmp.getId() + ", '" + tmp.getName().replaceAll("[^a-zA-Z]+", "") + "', '" + tmp.getPos() + "', " + (playday - 1) + ", " + season + ", " + tmp.getAge() + ", " + tmp.getPower() + " , " + tmp.getEp() + ",  " + tmp.getTp() + ", " + tmp.getAwp() + ", " + tmp.getBid() + ", " + tmp.isHasBidder() + ");";
+            String command = "INSERT INTO SPIELER VALUES(" + tmp.getId() + ", '" + tmp.getName().replaceAll("[^a-zA-Z]+", "") + "', '" + tmp.getPos() + "', " + (playday) + ", " + season + ", " + tmp.getAge() + ", " + tmp.getPower() + " , " + tmp.getEp() + ",  " + tmp.getTp() + ", " + tmp.getAwp() + ", " + tmp.getBid() + ", " + tmp.isHasBidder() + ");";
             statement.executeUpdate(command);
         }
 

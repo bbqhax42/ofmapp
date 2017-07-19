@@ -10,7 +10,7 @@ import java.util.Iterator;
  */
 public class PlayerListContainer implements Serializable {
 
-    private static final long serialVersionUID = 7219632990740128143L;
+        private static final long serialVersionUID = 7219632990740128143L;
     private static PlayerListContainer unique = null;
     private ArrayList<PlayerList> allSpielerListen;
     private int playday, season;

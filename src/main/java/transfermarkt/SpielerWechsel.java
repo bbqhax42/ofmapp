@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.*;
+import java.net.SocketTimeoutException;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
@@ -71,6 +72,8 @@ public class SpielerWechsel {
 
                 System.out.println("Playday: " + playday);
                 container = container.load(fileName);
+
+                System.out.println("Spieltag und Saison parsed from container: " + container.getSeason() + "/" + container.getPlayday());
 
 
                 try {
@@ -156,21 +159,35 @@ public class SpielerWechsel {
                             }
                             if (pos != null) {
                                 PlayerTM tmpSpieler = null;
-                                PlayerList playerList = container.getSpielerListe(age, power);
-                                System.out.println(name + " " + pos);
-                                writer.println(name + " " + pos);
-                                System.out.println(playerList);
-                                writer.println(playerList);
-                                tmpSpieler = playerList.findSpielerTM(name, pos);
-                                System.out.println(tmpSpieler);
-                                System.out.println("New Price: " + price);
-                                writer.println(tmpSpieler);
-                                writer.println("New Price: " + price);
+                                PlayerList playerList = null;
+                                if (container.getPlayday() == 9 || container.getPlayday() == 18 || container.getPlayday() == 27 || container.getPlayday() == 0) {
+                                    for (int i = power - 1; i <= power + 1; i++) {
+                                        if (container.getPlayday() == 0) age = age + 1;
+                                        playerList = container.getSpielerListe(age, i);
+                                        tmpSpieler = playerList.findSpielerTM(name, pos);
+                                        if (tmpSpieler != null) break;
+                                    }
+                                    System.out.println(name + " " + pos);
+                                    writer.println(name + " " + pos);
+                                    System.out.println(playerList);
+                                    writer.println(playerList);
+                                } else {
+                                    playerList = container.getSpielerListe(age, power);
+                                    tmpSpieler = playerList.findSpielerTM(name, pos);
+                                    System.out.println(name + " " + pos);
+                                    writer.println(name + " " + pos);
+                                    System.out.println(playerList);
+                                    writer.println(playerList);
+                                }
                                 if (tmpSpieler == null) {
                                     System.out.println("Update failure");
                                     writer.println("Update failure");
                                 }
                                 if (tmpSpieler != null) {
+                                    System.out.println(tmpSpieler);
+                                    System.out.println("New Price: " + price);
+                                    writer.println(tmpSpieler);
+                                    writer.println("New Price: " + price);
                                     tmpSpieler.setBid(price);
                                     tmpSpieler.setHasBidder(true);
                                     System.out.println("Update success");

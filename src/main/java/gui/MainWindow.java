@@ -84,17 +84,17 @@ public class MainWindow extends Frame implements ActionListener {
             chooser.setFileFilter(new FileNameExtensionFilter(
                     "Objectfile", "ser"));
             chooser.showOpenDialog(this);
-            String range = chooser.getSelectedFile().getName().trim();
+            String fileName = chooser.getSelectedFile().getName().trim();
 
-            if (range == null || range.length() <= 1) {
+            if (fileName == null || fileName.length() <= 1) {
                 JOptionPane.showMessageDialog(frame,
                         "Ungueltiges Format", "Inane error",
                         JOptionPane.ERROR_MESSAGE);
                 System.exit(-1);
             }
             try {
+                container = container.load(fileName);
                 databaseConn = new Database(container.getPlayday(), container.getSeason());
-                container = container.load(range);
                 container.saveDB(databaseConn);
                 databaseConn.startServer();
                 System.out.println("Database entries done!");

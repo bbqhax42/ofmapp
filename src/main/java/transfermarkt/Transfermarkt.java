@@ -325,8 +325,13 @@ public class Transfermarkt {
         }
 
         try {
-            container.setPlayday(playday);
-            container.setSeason(season);
+            if (playday == 34) {
+                container.setSeason(season + 1);
+                container.setPlayday(0);
+            } else {
+                container.setPlayday(playday + 1);
+                container.setSeason(season);
+            }
             container.save(fileName);
         } catch (IOException e) {
             e.printStackTrace();
