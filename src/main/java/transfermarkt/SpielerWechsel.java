@@ -66,10 +66,13 @@ public class SpielerWechsel {
                 PrintWriter writer = null;
 
                 parsePlaydayAndSeason();
-
-                fileName = (playday - 1) + "_" + season + "spielerlistencontainer" + ".ser";
-                logName = "SW" + (playday - 1) + "_" + season + "SpielerWechsel" + ".txt";
-
+                if (playday == 0) {
+                    fileName = "34" + "_" + --season + "spielerlistencontainer" + ".ser";
+                    logName = "SW" + "34" + "_" + season + "SpielerWechsel" + ".txt";
+                } else {
+                    fileName = (playday - 1) + "_" + season + "spielerlistencontainer" + ".ser";
+                    logName = "SW" + (playday - 1) + "_" + season + "SpielerWechsel" + ".txt";
+                }
                 System.out.println("Playday: " + playday);
                 container = container.load(fileName);
 
@@ -160,12 +163,16 @@ public class SpielerWechsel {
                             if (pos != null) {
                                 PlayerTM tmpSpieler = null;
                                 PlayerList playerList = null;
-                                if (container.getPlayday() == 9 || container.getPlayday() == 18 || container.getPlayday() == 27 || container.getPlayday() == 0) {
+                                if (container.getPlayday() == 8 || container.getPlayday() == 17 || container.getPlayday() == 26 || container.getPlayday() == 34) {
+                                    if (container.getPlayday() == 34) age = age - 1;
                                     for (int i = power - 1; i <= power + 1; i++) {
-                                        if (container.getPlayday() == 0) age = age + 1;
                                         playerList = container.getSpielerListe(age, i);
-                                        tmpSpieler = playerList.findSpielerTM(name, pos);
-                                        if (tmpSpieler != null) break;
+                                        if (playerList != null)
+                                            tmpSpieler = playerList.findSpielerTM(name, pos);
+                                        if (tmpSpieler != null) {
+                                            tmpSpieler.setPower(power);
+                                            break;
+                                        }
                                     }
                                     System.out.println(name + " " + pos);
                                     writer.println(name + " " + pos);
@@ -203,7 +210,12 @@ public class SpielerWechsel {
                     IOException e1) {
                 e1.printStackTrace();
             }
-
+            if(container.getPlayday()==34){
+                container.incrementAge();
+                container.setPlayday(0);
+                container.setSeason(season+1);
+                System.out.println("New season, incrementing age.");
+            }
             container.save("SW" + fileName);
         } catch (InterruptedException e) {
             e.printStackTrace();

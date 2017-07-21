@@ -10,7 +10,7 @@ import java.util.Iterator;
  */
 public class PlayerListContainer implements Serializable {
 
-        private static final long serialVersionUID = 7219632990740128143L;
+    private static final long serialVersionUID = 7219632990740128143L;
     private static PlayerListContainer unique = null;
     private ArrayList<PlayerList> allSpielerListen;
     private int playday, season;
@@ -33,6 +33,15 @@ public class PlayerListContainer implements Serializable {
         if (unique == null)
             unique = new PlayerListContainer();
         return unique;
+    }
+
+    public void incrementAge() {
+        for (int j = 17; j <= 36; j++) {//17/1-36/27
+            for (int i = 1; i <= 27; i++) {
+                PlayerList tmpList = getSpielerListe(j, i);
+                if (tmpList != null) tmpList.incrementAge();
+            }
+        }
     }
 
     public int getSeason() {
@@ -60,11 +69,11 @@ public class PlayerListContainer implements Serializable {
     }
 
     public PlayerList getSpielerListe(int age, int power) {
-        System.out.println("Age: " + age + " Power: " + power);
+        //System.out.println("Age: " + age + " Power: " + power);
         for (int i = 0; i < allSpielerListen.size() - 1; i++) {
             PlayerList tmp = allSpielerListen.get(i);
             if (tmp.getAge() == age && tmp.getPower() == power) {
-                System.out.println("Playerlist found");
+                //System.out.println("Playerlist found");
                 return tmp;
             }
         }
