@@ -105,6 +105,7 @@ public class SpielerWechsel {
                         .get();
 
 
+
                 r = new Random();
                 Thread.sleep(r.nextInt(10000 - 9000) + 1);
 
@@ -120,14 +121,24 @@ public class SpielerWechsel {
                                 readFile.nextLine();
                         }
                         while (readFile.hasNextLine()) {
-                            String name = null, pos = null;
+                            String name = null, pos = null, seller=null, buyer=null;
                             int power = -1, age = -1, price = -1;
 
                             //skip position in table, day, season, sales club and buyer club
-                            for (int i = 0; i < 5; i++) {
+                            for (int i = 0; i < 3; i++) {
                                 if (readFile.hasNextLine())
                                     readFile.nextLine();
                             }
+
+                            //parse seller
+                            if (readFile.hasNextLine())
+                                seller = readFile.nextLine().replace("<td>", "").replace("</td>", "").trim();
+                            //System.out.println(seller);
+
+                            //parse buyer
+                            if (readFile.hasNextLine())
+                                buyer = readFile.nextLine().replace("<td>", "").replace("</td>", "").trim();
+                            //System.out.println(buyer);
 
                             //parse name
                             if (readFile.hasNextLine())
@@ -197,6 +208,9 @@ public class SpielerWechsel {
                                     writer.println("New Price: " + price);
                                     tmpSpieler.setBid(price);
                                     tmpSpieler.setHasBidder(true);
+                                    tmpSpieler.setSeller(seller);
+                                    tmpSpieler.setBuyer(buyer);
+                                    writer.println("Transfered from: " + seller + " to " + buyer);
                                     System.out.println("Update success");
                                     writer.println("Update success");
                                 }

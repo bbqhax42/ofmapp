@@ -61,8 +61,9 @@ public class Database {
         for (Iterator<PlayerTM> iter = list.iterator(); iter.hasNext(); ) {
             PlayerTM tmp = iter.next();
             StringBuilder tmpString = new StringBuilder();
-            String command = "INSERT INTO SPIELER VALUES(" + tmp.getId() + ", '" + tmp.getName().replaceAll("[^a-zA-Z]+", "") + "', '" + tmp.getPos() + "', " + (playday) + ", " + season + ", " + tmp.getAge() + ", " + tmp.getPower() + " , " + tmp.getEp() + ",  " + tmp.getTp() + ", " + tmp.getAwp() + ", " + tmp.getBid() + ", " + tmp.isHasBidder() + ");";
+            String command = "INSERT INTO SPIELER VALUES(" + tmp.getId() + ", '" + tmp.getName().replaceAll("[^a-zA-Z]+", "") + "', '" + tmp.getPos() + "', " + (playday) + ", " + season + ", " + tmp.getAge() + ", " + tmp.getPower() + " , " + tmp.getEp() + ",  " + tmp.getTp() + ", " + tmp.getAwp() + ", " + tmp.getBid() + ", " + tmp.isHasBidder() + ", '" + tmp.getSeller() + "', '" + tmp.getBuyer() + "');";
             statement.executeUpdate(command);
+            //System.out.println(command);
         }
 
     }
@@ -76,7 +77,7 @@ public class Database {
         CreationHelper createHelper = wb.getCreationHelper();
         // sheet name needed
         Sheet sheet = wb.createSheet("SHEET NAME");
-        sheet.setColumnWidth(0, 20 * 256);
+        sheet.setColumnWidth(0, 8 * 256);
         sheet.setColumnWidth(1, 5 * 256);
         sheet.setColumnWidth(2, 8 * 256);
         sheet.setColumnWidth(3, 8 * 256);
@@ -89,7 +90,7 @@ public class Database {
         sheet.setColumnWidth(10, 12 * 256);
 
         Row row = sheet.createRow((short) 0);
-        row.createCell(0).setCellValue("Name");
+        row.createCell(0).setCellValue("Pos");
         row.createCell(1).setCellValue("Age");
         row.createCell(2).setCellValue("Power");
         row.createCell(3).setCellValue("Ep");
@@ -111,8 +112,9 @@ public class Database {
             row = sheet.createRow(i++);
 
 
-            Cell cell = row.createCell(0);
-            cell.setCellValue(rs.getString(2));
+            Cell cell = row.createCell
+                    (0);
+            cell.setCellValue(rs.getString(3));
 
             cell = row.createCell(1);
             cell.setCellValue(rs.getInt(6));

@@ -7,8 +7,9 @@ import java.text.NumberFormat;
  * Created by Chris on 23.10.2016.
  */
 public class PlayerTM implements Serializable {
+    private static final long serialVersionUID = 1088637054893063932L;
     private String name = null;
-    private String pos = null;
+    private String pos = null, seller=null, buyer=null;
     private int id, age, power, ep, tp, awp, bid;
     private boolean hasBidder, exportedIntoDatabase;
 
@@ -25,6 +26,22 @@ public class PlayerTM implements Serializable {
         setBid(bid);
         setHasBidder(hasBidder);
         exportedIntoDatabase = false;
+    }
+
+    public String getSeller() {
+        return seller;
+    }
+
+    public void setSeller(String seller) {
+        this.seller = seller;
+    }
+
+    public String getBuyer() {
+        return buyer;
+    }
+
+    public void setBuyer(String buyer) {
+        this.buyer = buyer;
     }
 
     public String getPos() {
