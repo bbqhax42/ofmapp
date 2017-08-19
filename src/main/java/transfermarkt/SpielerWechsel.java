@@ -174,7 +174,7 @@ public class SpielerWechsel {
                             if (pos != null) {
                                 PlayerTM tmpSpieler = null;
                                 PlayerList playerList = null;
-                                if (container.getPlayday() == 8 || container.getPlayday() == 17 || container.getPlayday() == 26 || container.getPlayday() == 34) {
+                                if (container.getPlayday() == 9 || container.getPlayday() == 18 || container.getPlayday() == 27 || container.getPlayday() == 34) {
                                     if (container.getPlayday() == 34) age = age - 1;
                                     for (int i = power - 1; i <= power + 1; i++) {
                                         playerList = container.getSpielerListe(age, i);

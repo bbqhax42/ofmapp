@@ -80,7 +80,7 @@ public class MainWindow extends Frame implements ActionListener {
         } else if (e.getActionCommand().equals("Datenbank befuellen")) {
 
             JFrame frame = new JFrame("InputDialog Example #1");
-            JFileChooser chooser = new JFileChooser("C:\\Users\\Chris\\ofmapp2");
+            JFileChooser chooser = new JFileChooser("C:\\User\\Chris\\ofmapp2");
             chooser.setFileFilter(new FileNameExtensionFilter(
                     "Objectfile", "ser"));
             chooser.showOpenDialog(this);
