@@ -23,11 +23,11 @@ public class FriendlyManager {
     private int playday = -1, season = -1;
     final int waitTimeLow = 3500; //Minimum wait time between Server requests
     final int waitTimeHigh = 4000; //Maximum wait time between Server requests
-    private String [] friendlyComments = {"spiele Diva", "Hi. darf ich dir friendly anbieten ? mfg", "Erfahrung für Dein Team, das Geld für meins!", "deine eps",
-    "Hi :-)", "Bitte keine Verlängerung!!!", "Abschussfriendly 3,5 ohne TW & Abwehr", "Danke", "gg", ":-)", "erfahrung gegen kohle", "Go for it", "Immer drauf da!!!",
-    "Lust auf ein Spielchen!?", "Geld/Erfahrung", "Kann es wieder losgehen? :)", "bitte stärke beachten!!!!!!!!!!!!!", "Vielen Dank, Thank You, Merci, Cпасибо, Gracias.",
-    "*** Abschussfriendlys ***", "minimal", "los geht's", "Würde mich freuen wenn es klappt", "gutes spiel", "Auf ne faire Partie ...", "Abschußfriendly",
-    "kanonenfutter", "343;off;div", "danke fürs annehmen", "", ""};
+    private String[] friendlyComments = {"spiele Diva", "Hi. darf ich dir friendly anbieten ? mfg", "Erfahrung für Dein Team, das Geld für meins!", "deine eps",
+            "Hi :-)", "Bitte keine Verlängerung!!!", "Abschussfriendly 3,5 ohne TW & Abwehr", "Danke", "gg", ":-)", "erfahrung gegen kohle", "Go for it", "Immer drauf da!!!",
+            "Lust auf ein Spielchen!?", "Geld/Erfahrung", "Kann es wieder losgehen? :)", "bitte stärke beachten!!!!!!!!!!!!!", "Vielen Dank, Thank You, Merci, Cпасибо, Gracias.",
+            "*** Abschussfriendlys ***", "minimal", "los geht's", "Würde mich freuen wenn es klappt", "gutes spiel", "Auf ne faire Partie ...", "Abschußfriendly",
+            "kanonenfutter", "343;off;div", "danke fürs annehmen", "", ""};
 
     public FriendlyManager() {
         teams.add(new Team("team1", 24743, "bbqhax43"));
@@ -66,7 +66,7 @@ public class FriendlyManager {
         //sample users -> can easily be automated and saved within database
         users.add(new User("sleepcycle", "melatonin", schedule1));
         users.add(new User("hansi1337v2", "asdf1234", schedule2));
-
+        users.add(new User("ak47purplehaze", "blueberryhaze", schedule3));
 
 
     }
@@ -106,7 +106,7 @@ public class FriendlyManager {
                 .get();
 
         Scanner readFile = new Scanner(doc.toString());
-        if (readFile.hasNextLine()) {
+        while (readFile.hasNextLine()) {
             String readerLine = readFile.nextLine();
             if (readerLine.contains("ablehnen</a>")) {
                 String tmpString = readerLine.trim().replace("<a href='?fr_annehmen=1&spielid=", "").replace("' class='blue'>annehmen</a> ", "")
@@ -156,7 +156,7 @@ public class FriendlyManager {
         Thread.sleep(r.nextInt(waitTimeHigh - waitTimeLow) + waitTimeLow);
     }
 
-    private void scheduleFriendly(Team team, User user, int date) throws IOException, InterruptedException {
+    private void scheduleFriendly(Team team, User user, int spieltag) throws IOException, InterruptedException {
         Random r = new Random();
 
 
@@ -205,13 +205,13 @@ public class FriendlyManager {
                 .execute();
 
         Thread.sleep(r.nextInt(waitTimeHigh - waitTimeLow) + waitTimeLow);
+        int tmpInt = r.nextInt(30);
 
-                int tmpInt=r.nextInt(30);
         Jsoup.connect("http://www.onlinefussballmanager.de/010_freund/anbieten_fr.php")
                 .cookies(loginCookies)
                 .userAgent(userAgent)
                 .referrer("http://www.onlinefussballmanager.de/010_freund/anbieten_fr.php?best_gegner=true&gegnerid=" + team.getTeamID())
-                .data("frspieltag", Integer.toString(date))
+                .data("frspieltag", Integer.toString(spieltag + 69))
                 .data("anpfiffzeit", "0")
                 .data("heimgast", "als_heim")
                 .data("gegnerid", Integer.toString(team.getTeamID()))

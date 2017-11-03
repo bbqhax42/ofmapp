@@ -99,6 +99,7 @@ public class PlayerListContainer implements Serializable {
 
     public static PlayerListContainer load(String fileName) throws IOException, ClassNotFoundException {
         ObjectInputStream ois = null;
+        System.out.println(fileName);
         ois = new ObjectInputStream(new FileInputStream(fileName));
         unique = (PlayerListContainer) ois.readObject();
         ois.close();

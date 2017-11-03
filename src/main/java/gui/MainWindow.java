@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -80,7 +81,8 @@ public class MainWindow extends Frame implements ActionListener {
         } else if (e.getActionCommand().equals("Datenbank befuellen")) {
 
             JFrame frame = new JFrame("InputDialog Example #1");
-            JFileChooser chooser = new JFileChooser("C:\\User\\Chris\\ofmapp2");
+            JFileChooser chooser = new JFileChooser();
+            chooser.setCurrentDirectory(new File(("C:\\User\\Chris\\ofmapp2")));
             chooser.setFileFilter(new FileNameExtensionFilter(
                     "Objectfile", "ser"));
             chooser.showOpenDialog(this);

@@ -48,7 +48,8 @@ public class AutoBidder {
 
 
             Map<String, String> loginCookies = loginResponse.cookies();
-            //System.out.println("Login response code: " + loginResponse.statusCode());
+            System.out.println("Login response message: " + loginResponse.statusMessage());
+            System.out.println("Login response code: " + loginResponse.cookies());
             Document bidInfoPage = Jsoup.connect("http://www.onlinefussballmanager.de/transfer/transfermarkt.php?aktion=mitbieten&spielerid=" + playerID)
                     .userAgent(userAgent)
                     .cookies(loginCookies)

@@ -78,6 +78,12 @@ public class SpielerWechsel {
 
                 System.out.println("Spieltag und Saison parsed from container: " + container.getSeason() + "/" + container.getPlayday());
 
+                if (container.getPlayday() == 35) {
+                    container.incrementAge();
+                    container.setPlayday(0);
+                    container.setSeason(season + 1);
+                    System.out.println("New season, incrementing age.");
+                }
 
                 try {
                     writer = new PrintWriter(logName, "UTF-8");
@@ -105,7 +111,6 @@ public class SpielerWechsel {
                         .get();
 
 
-
                 r = new Random();
                 Thread.sleep(r.nextInt(10000 - 9000) + 1);
 
@@ -121,7 +126,7 @@ public class SpielerWechsel {
                                 readFile.nextLine();
                         }
                         while (readFile.hasNextLine()) {
-                            String name = null, pos = null, seller=null, buyer=null;
+                            String name = null, pos = null, seller = null, buyer = null;
                             int power = -1, age = -1, price = -1;
 
                             //skip position in table, day, season, sales club and buyer club
@@ -174,8 +179,8 @@ public class SpielerWechsel {
                             if (pos != null) {
                                 PlayerTM tmpSpieler = null;
                                 PlayerList playerList = null;
-                                if (container.getPlayday() == 9 || container.getPlayday() == 18 || container.getPlayday() == 27 || container.getPlayday() == 34) {
-                                    if (container.getPlayday() == 34) age = age - 1;
+                                if (container.getPlayday() == 9 || container.getPlayday() == 18 || container.getPlayday() == 27 || container.getPlayday() == 0) {
+                                    if (container.getPlayday() == 0) age = age - 1;
                                     for (int i = power - 1; i <= power + 1; i++) {
                                         playerList = container.getSpielerListe(age, i);
                                         if (playerList != null)
@@ -191,11 +196,15 @@ public class SpielerWechsel {
                                     writer.println(playerList);
                                 } else {
                                     playerList = container.getSpielerListe(age, power);
-                                    tmpSpieler = playerList.findSpielerTM(name, pos);
-                                    System.out.println(name + " " + pos);
-                                    writer.println(name + " " + pos);
-                                    System.out.println(playerList);
-                                    writer.println(playerList);
+                                    if (playerList == null) {
+                                        tmpSpieler = null;
+                                    } else {
+                                        tmpSpieler = playerList.findSpielerTM(name, pos);
+                                        System.out.println(name + " " + pos);
+                                        writer.println(name + " " + pos);
+                                        System.out.println(playerList);
+                                        writer.println(playerList);
+                                    }
                                 }
                                 if (tmpSpieler == null) {
                                     System.out.println("Update failure");
@@ -224,12 +233,7 @@ public class SpielerWechsel {
                     IOException e1) {
                 e1.printStackTrace();
             }
-            if(container.getPlayday()==34){
-                container.incrementAge();
-                container.setPlayday(0);
-                container.setSeason(season+1);
-                System.out.println("New season, incrementing age.");
-            }
+
             container.save("SW" + fileName);
         } catch (InterruptedException e) {
             e.printStackTrace();

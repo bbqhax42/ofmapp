@@ -46,10 +46,12 @@ public class PlayerList implements Serializable {
 
 
     public PlayerTM findSpielerTM(String name, String pos) {
+        if(name==null || pos ==null) return null;
         PlayerTM tmpPlayer;
         for (int i = 0; i <= allPlayerTM.size() - 1; i++) {
             //System.out.println("size" + allPlayerTM.size());
             tmpPlayer = allPlayerTM.get(i);
+            if(tmpPlayer.getName()==null) return null;
             if (tmpPlayer.getName().replaceAll("[^a-zA-Z]+", "").equals(name.replaceAll("[^a-zA-Z]+", "")) && tmpPlayer.getPos().replaceAll("[^a-zA-Z]+", "").equals(pos.replaceAll("[^a-zA-Z]+", ""))) {
                 return tmpPlayer;
             }

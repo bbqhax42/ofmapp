@@ -88,6 +88,8 @@ public class Database {
         sheet.setColumnWidth(8, 5 * 256);
         sheet.setColumnWidth(9, 5 * 256);
         sheet.setColumnWidth(10, 12 * 256);
+        sheet.setColumnWidth(11, 28 * 256);
+        sheet.setColumnWidth(12, 28 * 256);
 
         Row row = sheet.createRow((short) 0);
         row.createCell(0).setCellValue("Pos");
@@ -101,6 +103,8 @@ public class Database {
         row.createCell(8).setCellValue("Day");
         row.createCell(9).setCellValue("Season");
         row.createCell(10).setCellValue("ID");
+        row.createCell(11).setCellValue("Buyer");
+        row.createCell(12).setCellValue("Seller");
         CellStyle styleMoney = wb.createCellStyle();
         CellStyle styleNumber = wb.createCellStyle();
         DataFormat format = wb.createDataFormat();
@@ -114,45 +118,51 @@ public class Database {
 
             Cell cell = row.createCell
                     (0);
-            cell.setCellValue(rs.getString(3));
+            cell.setCellValue(rs.getString(2));
 
             cell = row.createCell(1);
-            cell.setCellValue(rs.getInt(6));
+            cell.setCellValue(rs.getInt(5));
 
             cell = row.createCell(2);
-            cell.setCellValue(rs.getInt(7));
+            cell.setCellValue(rs.getInt(6));
 
             cell = row.createCell(3);
-            cell.setCellValue(rs.getInt(8));
+            cell.setCellValue(rs.getInt(7));
             cell.setCellStyle(styleNumber);
 
             cell = row.createCell(4);
-            cell.setCellValue(rs.getInt(9));
+            cell.setCellValue(rs.getInt(8));
             cell.setCellStyle(styleNumber);
 
             cell = row.createCell(5);
-            cell.setCellValue(rs.getInt(10));
+            cell.setCellValue(rs.getInt(9));
             cell.setCellStyle(styleNumber);
 
             cell = row.createCell(6);
-            cell.setCellValue(rs.getInt(11));
+            cell.setCellValue(rs.getInt(10));
             cell.setCellStyle(styleMoney);
 
             cell = row.createCell(7);
-            cell.setCellValue(rs.getBoolean(12));
+            cell.setCellValue(rs.getBoolean(11));
 
             cell = row.createCell(8);
-            cell.setCellValue(rs.getInt(4));
+            cell.setCellValue(rs.getInt(3));
 
             cell = row.createCell(9);
-            cell.setCellValue(rs.getInt(5));
+            cell.setCellValue(rs.getInt(4));
 
             cell = row.createCell(10);
             cell.setCellValue(rs.getInt(1));
 
+            cell = row.createCell(11);
+            cell.setCellValue(rs.getString(12));
+
+            cell = row.createCell(12);
+            cell.setCellValue(rs.getString(13));
+
         }
 
-
+//select * from spieler order by pos asc, age asc, power asc, day asc, bid desc,  hasbidder desc
         for (int j = 0; j < 11; j++) {
             sheet.autoSizeColumn(j, false);
         }

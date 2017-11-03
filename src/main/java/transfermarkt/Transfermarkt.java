@@ -28,8 +28,8 @@ public class Transfermarkt {
     private String logName;
     private Map<String, String> loginCookies;
     private String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0";
-    final int waitTimeLow = 3500; //Minimum wait time between Server requests
-    final int waitTimeHigh = 4000; //Maximum wait time between Server requests
+    final int waitTimeLow = 5500; //Minimum wait time between Server requests
+    final int waitTimeHigh = 7000; //Maximum wait time between Server requests
     final int minAge = 17; //Minimum age to be parsed
     final int maxAge = 36; //Maximum age to be parsed
     final int minPower = 1; //Minimum power to be parsed
@@ -52,6 +52,7 @@ public class Transfermarkt {
 
     public Transfermarkt() {
         PlayerListContainer container = PlayerListContainer.instance();
+        container.clear();
 
         try {
 
@@ -151,7 +152,7 @@ public class Transfermarkt {
 
 
                     System.out.println("Attempting to parse " + searchAge + "/" + searchPower);
-                    //writer.println("Attempting to parse " + searchAge + "/" + searchPower);
+                    writer.println("Attempting to parse " + searchAge + "/" + searchPower);
                     Document transferPage;
                     try {
                         transferPage = Jsoup.connect("http://www.onlinefussballmanager.de/010_transfer/transfermarkt.php?seite=1&orderby=7&submit2=Suchen&suche_gestartet=1&alt_bis=" + searchAge + "&alt_von=" + searchAge + "&staerke_von=" + searchPower + "&nation=999&staerke_bis=" + searchPower + "&woche_von=7&woche_bis=7&max_gebot=300000000&rel_mw_abstand=alle&suchpos0=0&suchpos1=1&suchpos2=2&suchpos3=3&suchpos4=4&suchpos5=5&suchpos6=6&suchpos7=7&suchpos8=8&suchpos9=9&suchpos10=10&suchpos11=11&suchpos12=12&suchpos13=13&suchpos14=14")
@@ -170,7 +171,7 @@ public class Transfermarkt {
                                 .get();
                     }
 
-                    //writer.println("http://www.onlinefussballmanager.de/010_transfer/transfermarkt.php?seite=1&orderby=7&submit2=Suchen&suche_gestartet=1&alt_bis=" + searchAge + "&alt_von=" + searchAge + "&staerke_von=" + searchPower + "&nation=999&staerke_bis=" + searchPower + "&woche_von=7&woche_bis=7&max_gebot=300000000&rel_mw_abstand=alle&suchpos0=0&suchpos1=1&suchpos2=2&suchpos3=3&suchpos4=4&suchpos5=5&suchpos6=6&suchpos7=7&suchpos8=8&suchpos9=9&suchpos10=10&suchpos11=11&suchpos12=12&suchpos13=13&suchpos14=14");
+                    writer.println("http://www.onlinefussballmanager.de/010_transfer/transfermarkt.php?seite=1&orderby=7&submit2=Suchen&suche_gestartet=1&alt_bis=" + searchAge + "&alt_von=" + searchAge + "&staerke_von=" + searchPower + "&nation=999&staerke_bis=" + searchPower + "&woche_von=7&woche_bis=7&max_gebot=300000000&rel_mw_abstand=alle&suchpos0=0&suchpos1=1&suchpos2=2&suchpos3=3&suchpos4=4&suchpos5=5&suchpos6=6&suchpos7=7&suchpos8=8&suchpos9=9&suchpos10=10&suchpos11=11&suchpos12=12&suchpos13=13&suchpos14=14");
 
                     //Wait time between Server requests
                     Thread.sleep(r.nextInt(waitTimeHigh - waitTimeLow) + waitTimeLow);
@@ -209,7 +210,7 @@ public class Transfermarkt {
                                     .timeout(0)
                                     .get();
                             //pause 3-4 min einfuegen
-                           //writer.println("http://www.onlinefussballmanager.de/010_transfer/transfermarkt.php?seite=" + k + "&orderby=7&submit2=Suchen&suche_gestartet=1&alt_bis=" + searchAge + "&alt_von=" + searchAge + "&staerke_von=" + searchPower + "&nation=999&staerke_bis=" + searchPower + "&woche_von=7&woche_bis=7&max_gebot=300000000&rel_mw_abstand=alle&suchpos0=0&suchpos1=1&suchpos2=2&suchpos3=3&suchpos4=4&suchpos5=5&suchpos6=6&suchpos7=7&suchpos8=8&suchpos9=9&suchpos10=10&suchpos11=11&suchpos12=12&suchpos13=13&suchpos14=14");
+                            writer.println("http://www.onlinefussballmanager.de/010_transfer/transfermarkt.php?seite=" + k + "&orderby=7&submit2=Suchen&suche_gestartet=1&alt_bis=" + searchAge + "&alt_von=" + searchAge + "&staerke_von=" + searchPower + "&nation=999&staerke_bis=" + searchPower + "&woche_von=7&woche_bis=7&max_gebot=300000000&rel_mw_abstand=alle&suchpos0=0&suchpos1=1&suchpos2=2&suchpos3=3&suchpos4=4&suchpos5=5&suchpos6=6&suchpos7=7&suchpos8=8&suchpos9=9&suchpos10=10&suchpos11=11&suchpos12=12&suchpos13=13&suchpos14=14");
                         }
 
 
@@ -301,7 +302,7 @@ public class Transfermarkt {
                     }
                     if (age == -1 && power == -1) {
                         System.out.println(searchAge + "/" + searchPower + " does not exist on market");
-                        //writer.println(searchAge + "/" + searchPower + " does not exist on market");
+                        writer.println(searchAge + "/" + searchPower + " does not exist on market");
                         //Optimation possible by breaking out if certain powers don't exist multiple times in a row!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     }
                     if (tmpListe != null) {
@@ -309,8 +310,8 @@ public class Transfermarkt {
                             tmpListe.add(tmpStorage.get(i));
                         }
                         System.out.println("Verifier: " + verifierInt + " tmpListe.size(): " + tmpListe.size() + " Check: " + (verifierInt == tmpListe.size()));
-                       //writer.println("Verifier: " + verifierInt + " tmpListe.size(): " + tmpListe.size() + " Check: " + (verifierInt == tmpListe.size()));
-                       //writer.println(tmpListe);
+                        writer.println("Verifier: " + verifierInt + " tmpListe.size(): " + tmpListe.size() + " Check: " + (verifierInt == tmpListe.size()));
+                        //writer.println(tmpListe);
                     }
 
                     //System.out.println(tmpStorage.size()); //Does it contain all elements?
@@ -324,11 +325,17 @@ public class Transfermarkt {
         }
 
         try {
-                container.setPlayday(playday + 1);
-                container.setSeason(season);
-
+            container.setPlayday(playday + 1);
+            System.out.println(container.getPlayday());
+            container.setSeason(season);
+            System.out.println("Saving file to: " +fileName);
+            Random r = new Random();
+            Thread.sleep(r.nextInt(25 - 15) + 15);
+            System.out.println("Saving finished");
             container.save(fileName);
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
