@@ -1,24 +1,14 @@
 
-import finanzgesamtueberblick.ProfileParser;
-import finanzgesamtueberblick.SpielerFUContainer;
 import gui.MainWindow;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.WorkbookUtil;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.h2.jdbc.JdbcSQLException;
-import transfermarkt.*;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.sql.SQLException;
-
-import static java.lang.Boolean.TRUE;
 
 public class main {
 
 
     public static void main(String[] args) {
+        String str=new String("linn3232enkohl666@gmail.com");
+        System.out.println(str.hashCode());
+        int hash=str.hashCode();
+        System.out.println(hash==str.hashCode());
 
         new MainWindow();
 
