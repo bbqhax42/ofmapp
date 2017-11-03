@@ -12,7 +12,7 @@ public class main {
 
         new MainWindow();
 
-        // spieler aufm tm anzeigen, mit filtern, und ggf historie zur spielerstaerke, alter etc
+        // spieler aufm tm anzeigen, mit filtern, und ggf historie zur spielerstaerke, alter etc lul
 
 //select * from spieler where age =18 and power =6 and day between 9 and 10 and pos='TW' order by hasbidder desc, day asc, bid asc
 
