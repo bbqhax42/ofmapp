@@ -21,7 +21,6 @@ public class Transfermarkt {
     private int playday = -1, season = -1;
     final String version = "A";
 
-
     final String userID = "brotkatenils";
     final String userPass = "dertollenils";
     private String fileName;
